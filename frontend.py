@@ -1,7 +1,9 @@
 from tkinter import *
 
+import backend as back
+
 win = Tk()
-win.wm_title = "Book"
+win.title("Book")
 
 #define labels
 
@@ -45,5 +47,25 @@ scroll1.grid(row=2, column=2)
 
 list1.configure(yscrollcommand=scroll1.set)
 scroll1.configure(command=list1.yview)
+
+#define buttons
+
+b1 = Button(win, text="View All", width=12)
+b1.grid(row=2,column=3)
+
+b2 = Button(win, text="Search", width=12)
+b2.grid(row=3,column=3)
+
+b3 = Button(win, text="Add", width=12)
+b3.grid(row=4,column=3)
+
+b4 = Button(win, text="Updated", width=12)
+b4.grid(row=5,column=3)
+
+b5 = Button(win, text="Delete", width=12)
+b5.grid(row=6,column=3)
+
+b6 = Button(win, text="Close", width=12)
+b6.grid(row=7,column=3)
 
 win.mainloop()
