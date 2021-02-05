@@ -30,6 +30,20 @@ def update():
     conn.commit()
     conn.close()
 
+def search(title="",author="",year="",isbn=""):
+    conn = sq3.connect("books.db")
+    cur = conn.cursor()
+    c = cur.execute("SELECT * FROM books WHERE \
+        title=? OR \
+        author=? OR \
+        year=? OR \
+        isbn=? \
+        ",(title,author,year,isbn)).fetchall()
+    conn.commit()
+    conn.close()
+    return "Returned : {}".format(c)
+    
+
 def delete():
     conn = sq3.connect("books.db")
     cur = conn.cursor()
@@ -38,7 +52,6 @@ def delete():
     conn.close()
 
 
-insert("Ulysses", "James Joyce",30000,1.99)
-print(view())
+# print(search("Ulysses"))
 connect()
 
