@@ -1,9 +1,58 @@
 from tkinter import *
+from tkinter import messagebox
 
 import backend as back
 
 win = Tk()
 win.title("Book")
+
+def get_selected_row(event):
+    global selected
+    try:
+        idx = list1.curselection()[0]
+        selected = list1.get(idx) 
+        titleEntry.delete(0,END)
+        titleEntry.insert(END,selected[1])
+        yearEntry.delete(0,END)
+        yearEntry.insert(END,selected[2])
+        authorEntry.delete(0,END)
+        authorEntry.insert(END,selected[3])
+        isbnEntry.delete(0,END)
+        isbnEntry.insert(END,selected[4])
+    except IndexError:
+        pass
+
+def view_command():
+    list1.delete(0,END)
+    for row in back.view():
+        list1.insert(END, row)
+
+def search_command():
+    list1.delete(0, END)
+    for row in back.search(titleText.get(),authorText.get(),yearText.get(),isbnText.get()):
+        # print(back.search(title,author,year,isbn))
+        list1.insert(END, row)
+
+def insert_command():
+    list1.delete(0, END)
+    title = titleText.get()
+    back.insert(title,authorText.get(),yearText.get(),isbnText.get())
+    print("Inserted [{},{},{},{}]".format(titleText.get(),authorText.get(),yearText.get(),isbnText.get()))
+    if title == "":
+        title = "Untitled Book"
+    messagebox.showinfo(title="Success", message="Added {}".format(title))
+    titleEntry.delete(0, END)
+    authorEntry.delete(0,END)
+    yearEntry.delete(0, END)
+    isbnEntry.delete(0,END)
+
+def update_command():
+    back.update(selected[0],titleText.get(),authorText.get(),yearText.get(),isbnText.get())
+
+def delete_command():
+    id = selected[0]
+    back.delete(id)
+    # list1.delete(selected, )
 
 #define labels
 
@@ -48,24 +97,26 @@ scroll1.grid(row=2, column=2)
 list1.configure(yscrollcommand=scroll1.set)
 scroll1.configure(command=list1.yview)
 
+list1.bind('<<ListboxSelect>>', get_selected_row)
+
 #define buttons
 
-b1 = Button(win, text="View All", width=12)
+b1 = Button(win, text="View All", width=12, command=view_command)
 b1.grid(row=2,column=3)
 
-b2 = Button(win, text="Search", width=12)
+b2 = Button(win, text="Search", width=12, command=search_command)
 b2.grid(row=3,column=3)
 
-b3 = Button(win, text="Add", width=12)
+b3 = Button(win, text="Add", width=12, command=insert_command)
 b3.grid(row=4,column=3)
 
-b4 = Button(win, text="Updated", width=12)
+b4 = Button(win, text="Update", width=12, command=update_command)
 b4.grid(row=5,column=3)
 
-b5 = Button(win, text="Delete", width=12)
+b5 = Button(win, text="Delete", width=12, command=delete_command)
 b5.grid(row=6,column=3)
 
-b6 = Button(win, text="Close", width=12)
+b6 = Button(win, text="Close", width=12, command=win.destroy)
 b6.grid(row=7,column=3)
 
 win.mainloop()
