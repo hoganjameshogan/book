@@ -1,9 +1,16 @@
+#!/usr/bin/python
+# -*- coding: ascii -*-
+import os, sys
 from tkinter import *
 from tkinter import messagebox
 
-import backend as back
+
+from backend import Database
+
+db = Database("books.db")
 
 win = Tk()
+# win['bg'] = "#038cfc"
 win.title("Book")
 
 def get_selected_row(event):
@@ -24,19 +31,19 @@ def get_selected_row(event):
 
 def view_command():
     list1.delete(0,END)
-    for row in back.view():
+    for row in db.view():
         list1.insert(END, row)
 
 def search_command():
     list1.delete(0, END)
-    for row in back.search(titleText.get(),authorText.get(),yearText.get(),isbnText.get()):
+    for row in db.search(titleText.get(),authorText.get(),yearText.get(),isbnText.get()):
         # print(back.search(title,author,year,isbn))
         list1.insert(END, row)
 
 def insert_command():
     list1.delete(0, END)
     title = titleText.get()
-    back.insert(title,authorText.get(),yearText.get(),isbnText.get())
+    db.insert(title,authorText.get(),yearText.get(),isbnText.get())
     print("Inserted [{},{},{},{}]".format(titleText.get(),authorText.get(),yearText.get(),isbnText.get()))
     if title == "":
         title = "Untitled Book"
@@ -47,11 +54,11 @@ def insert_command():
     isbnEntry.delete(0,END)
 
 def update_command():
-    back.update(selected[0],titleText.get(),authorText.get(),yearText.get(),isbnText.get())
+    db.update(selected[0],titleText.get(),authorText.get(),yearText.get(),isbnText.get())
 
 def delete_command():
     id = selected[0]
-    back.delete(id)
+    db.delete(id)
     # list1.delete(selected, )
 
 #define labels
@@ -120,3 +127,5 @@ b6 = Button(win, text="Close", width=12, command=win.destroy)
 b6.grid(row=7,column=3)
 
 win.mainloop()
+
+
