@@ -4,7 +4,6 @@ import os, sys
 from tkinter import *
 from tkinter import messagebox
 
-
 from backend import Database
 
 db = Database("books.db")

@@ -1,5 +1,4 @@
 import sqlite3 as sq3
-
 class Database:
     def __init__(self, db):
         self.conn = sq3.connect(db)
@@ -43,8 +42,9 @@ class Database:
         self.cur.execute("DELETE FROM books WHERE id=?", (id,))
         self.conn.commit()
 
-    def del(self):
+    def __del__(self):
         self.conn.close()
+
 
 
 
